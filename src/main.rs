@@ -1,7 +1,7 @@
-use std::{net::{TcpListener, TcpStream}, io::{Read, Write}, thread, str::FromStr};
+use std::{net::{TcpListener, TcpStream}, io::{Read, Write}, thread, str::FromStr, io::Result};
 use httparse::{self, Request};
 use reqwest;
-use json::object;
+use html_parser::Dom;
 // use futures::executor::block_on;
 
 fn main() {
@@ -21,24 +21,23 @@ fn handle_connection(mut stream: TcpStream) {
   let mut req = Request::new(&mut headers);
   let parse_result = Request::parse(&mut req, &buffer);
   match parse_result {
-    Err(err) => panic!("{}", err),
+    Err(err) => panic!("{:#?}", err),
     Ok(x) => println!("Parse Status: {:#?}", x)
   }
-  let path = req.path.unwrap();
+  let path = match req.path {
+    None => panic!("path not found"),
+    Some(x) => x
+  };
   let (is_query_found, query_string) = find_query(path, "url");
   if !is_query_found { panic!("Query not found") }
   let data = fetch(&query_string);
-  let contents = object!{
-    thumbnail: data
+  let result_vec = match find_meta(&data) {
+    None => panic!("Meta tag not found"),
+    Some(x) => x
   };
-  let response = format!(
-    "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Language: en-US\r\nAccess-Control-Allow-Origin: *\r\nAccess-Control-Request-Method: GET\r\n\r\n{}",
-    contents
-  );
-  let write_result = stream.write(response.as_bytes());
-  match write_result {
-    Err(err) => panic!("{}", err),
-    Ok(_) => stream.flush().unwrap()
+  match response(stream, result_vec) {
+    Err(err) => panic!("{:#?}", err),
+    Ok(_) => println!("Successfully responsed")
   }
 }
 
@@ -69,3 +68,46 @@ fn fetch(url: &str) -> String {
   let header = splitted[0];
   String::from_str(header).unwrap()
 }
+
+fn find_meta(data: &String) -> Option<Vec<String>> {
+  let parsed = match Dom::parse(data) {
+    Err(err) => panic!("{:#?}", err),
+    Ok(result) => result
+  };
+  let json = match parsed.to_json() {
+    Err(err) => panic!("{:#?}", err),
+    Ok(result) => json::parse(&result).unwrap()
+  };
+  let json_tree = &json["children"];
+  let mut result: Vec<String> = Vec::new();
+  for el in 0..json_tree.len() - 1 {
+    if json_tree[el]["name"] != "meta" {
+      continue;
+    }
+    result.push(json_tree[el]["attributes"].to_string())
+  }
+  match result.len() {
+    0 => None,
+    _ => Some(result)
+  }
+}
+
+fn response(mut stream: TcpStream, data: Vec<String>) -> Result<&'static str> {
+  let response = format!(
+    "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Language: en-US\r\nAccess-Control-Allow-Origin: *\r\nAccess-Control-Request-Method: GET\r\n\r\n{:#?}\n",
+    data
+  );
+  let write_result = stream.write(response.as_bytes());
+  match write_result {
+    Err(err) => Err(err),
+    Ok(_) => {
+      stream.flush().unwrap();
+      Ok("OK")
+    }
+  }
+}
+
+// TODO
+// [ ] Return error message to clients when [ query wasn't found, url was invalid ]
+// [x] Make a function splitting up meta tag and converting them into object
+// [ ] Graceful shutdown and cleanup
