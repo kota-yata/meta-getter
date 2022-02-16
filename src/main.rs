@@ -1,4 +1,4 @@
-use std::{net::{TcpListener, TcpStream}, io::{Read, Write}, thread, str::FromStr, io::Result};
+use std::{net::{TcpListener, TcpStream}, io::{Read, Write}, thread, str::FromStr, io::{Result, Error, ErrorKind}};
 use httparse::{self, Request};
 use reqwest;
 use html_parser::Dom;
@@ -25,17 +25,32 @@ fn handle_connection(mut stream: TcpStream) {
     Ok(x) => println!("Parse Status: {:#?}", x)
   }
   let path = match req.path {
-    None => panic!("path not found"),
+    None => {
+      let empty_response = Vec::from([String::from_str("Path not found").unwrap()]);
+      response(stream, 200, empty_response).unwrap();
+      panic!("Path not found")
+    },
     Some(x) => x
   };
   let (is_query_found, query_string) = find_query(path, "url");
-  if !is_query_found { panic!("Query not found") }
-  let data = fetch(&query_string);
+  if !is_query_found {
+    let empty_response = Vec::from([String::from_str("Query not found").unwrap()]);
+    response(stream, 200, empty_response).unwrap();
+    panic!("Query not found")
+  }
+  let data = match fetch(&query_string) {
+    Err(_) => {
+      let empty_response = Vec::from([String::from_str("Invalid URL").unwrap()]);
+      response(stream, 200, empty_response).unwrap();
+      panic!("Invalid URL")
+    },
+    Ok(x) => x
+  };
   let result_vec = match find_meta(&data) {
     None => panic!("Meta tag not found"),
     Some(x) => x
   };
-  match response(stream, result_vec) {
+  match response(stream, 200, result_vec) {
     Err(err) => panic!("{:#?}", err),
     Ok(_) => println!("Successfully responsed")
   }
@@ -62,11 +77,16 @@ fn find_query(path: &str, query_name: &str) -> (bool, String) {
   result
 }
 
-fn fetch(url: &str) -> String {
-  let res = reqwest::blocking::get(url).unwrap().text().unwrap();
-  let splitted: Vec<&str> = res.split("</head>").collect();
-  let header = splitted[0];
-  String::from_str(header).unwrap()
+fn fetch(url: &str) -> Result<String> {
+  match reqwest::blocking::get(url) {
+    Err(err) => return Err(Error::new(ErrorKind::Other, err.to_string())),
+    Ok(data) => {
+      let res = data.text().unwrap();
+      let splitted: Vec<&str> = res.split("</head>").collect();
+      let header = splitted[0];
+      return Ok(String::from_str(header).unwrap());
+    }
+  };
 }
 
 fn find_meta(data: &String) -> Option<Vec<String>> {
@@ -92,9 +112,10 @@ fn find_meta(data: &String) -> Option<Vec<String>> {
   }
 }
 
-fn response(mut stream: TcpStream, data: Vec<String>) -> Result<&'static str> {
+fn response(mut stream: TcpStream, status: u16, data: Vec<String>) -> Result<&'static str> {
   let response = format!(
-    "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Language: en-US\r\nAccess-Control-Allow-Origin: *\r\nAccess-Control-Request-Method: GET\r\n\r\n{:#?}\n",
+    "HTTP/2.0 {}\r\nContent-Type: application/json\r\nContent-Language: en-US\r\nAccess-Control-Allow-Origin: *\r\nAccess-Control-Request-Method: GET\r\n\r\n{:#?}\n",
+    status,
     data
   );
   let write_result = stream.write(response.as_bytes());
