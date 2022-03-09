@@ -1,0 +1,12 @@
+/Users/kota/dev/repositories/hello_cargo/target/release/deps/proc_macro2-fd0bd4fc3fd09610.rmeta: /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/lib.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/marker.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/parse.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/detection.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/fallback.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/wrapper.rs
+
+/Users/kota/dev/repositories/hello_cargo/target/release/deps/libproc_macro2-fd0bd4fc3fd09610.rlib: /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/lib.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/marker.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/parse.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/detection.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/fallback.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/wrapper.rs
+
+/Users/kota/dev/repositories/hello_cargo/target/release/deps/proc_macro2-fd0bd4fc3fd09610.d: /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/lib.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/marker.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/parse.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/detection.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/fallback.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/wrapper.rs
+
+/Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/lib.rs:
+/Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/marker.rs:
+/Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/parse.rs:
+/Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/detection.rs:
+/Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/fallback.rs:
+/Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.36/src/wrapper.rs:

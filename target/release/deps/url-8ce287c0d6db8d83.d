@@ -1,0 +1,13 @@
+/Users/kota/dev/repositories/hello_cargo/target/release/deps/url-8ce287c0d6db8d83.rmeta: /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/lib.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/host.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/origin.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/parser.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/path_segments.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/slicing.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/quirks.rs
+
+/Users/kota/dev/repositories/hello_cargo/target/release/deps/liburl-8ce287c0d6db8d83.rlib: /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/lib.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/host.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/origin.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/parser.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/path_segments.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/slicing.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/quirks.rs
+
+/Users/kota/dev/repositories/hello_cargo/target/release/deps/url-8ce287c0d6db8d83.d: /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/lib.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/host.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/origin.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/parser.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/path_segments.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/slicing.rs /Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/quirks.rs
+
+/Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/lib.rs:
+/Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/host.rs:
+/Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/origin.rs:
+/Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/parser.rs:
+/Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/path_segments.rs:
+/Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/slicing.rs:
+/Users/kota/.cargo/registry/src/github.com-1ecc6299db9ec823/url-2.2.2/src/quirks.rs:
