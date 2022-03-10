@@ -5,7 +5,7 @@ use html_parser::Dom;
 // use futures::executor::block_on;
 
 fn main() {
-  let listener = TcpListener::bind("127.0.0.1:8000").unwrap();
+  let listener = TcpListener::bind("0.0.0.0:8000").unwrap();
   for stream in listener.incoming() {
     let stream = stream.unwrap();
     thread::spawn(|| {
