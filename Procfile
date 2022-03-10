@@ -1,1 +1,1 @@
-web: cargo run
+web: ./target/debug/meta-getter
