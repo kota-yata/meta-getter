@@ -1,1 +1,1 @@
-web: ./target/release/meta-getter
+web: ./target/debug/meta-getter
