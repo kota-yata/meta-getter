@@ -5,7 +5,7 @@ use html_parser::Dom;
 // use futures::executor::block_on;
 
 fn main() {
-  let listener = TcpListener::bind(format!("0.0.0.0:{}", std::env::var("PORT").unwrap())).unwrap();
+  let listener = TcpListener::bind(format!("0.0.0.0:{}", std::env::var("PORT").unwrap_or("8000".to_string()))).unwrap();
   for stream in listener.incoming() {
     let stream = stream.unwrap();
     thread::spawn(|| {
@@ -21,7 +21,7 @@ fn handle_connection(mut stream: TcpStream) {
   let mut req = Request::new(&mut headers);
   let parse_result = Request::parse(&mut req, &buffer);
   match parse_result {
-    Err(err) => panic!("{:#?}", err),
+    Err(err) => panic!("parse_result: {:#?}", err),
     Ok(x) => println!("Parse Status: {:#?}", x)
   }
   let path = match req.path {
@@ -36,13 +36,14 @@ fn handle_connection(mut stream: TcpStream) {
   if !is_query_found {
     let empty_response = Vec::from([String::from_str("Query not found").unwrap()]);
     response(stream, 200, empty_response).unwrap();
-    panic!("Query not found")
+    // panic!("Query not found")
+    return;
   }
   let data = match fetch(&query_string) {
     Err(_) => {
       let empty_response = Vec::from([String::from_str("Invalid URL").unwrap()]);
       response(stream, 200, empty_response).unwrap();
-      panic!("Invalid URL")
+      return;
     },
     Ok(x) => x
   };
