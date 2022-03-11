@@ -17,7 +17,7 @@ fn main() {
 fn handle_connection(mut stream: TcpStream) {
   let mut buffer = [0; 1024];
   stream.read(&mut buffer).unwrap();
-  let mut headers = [httparse::EMPTY_HEADER; 16];
+  let mut headers = [httparse::EMPTY_HEADER; 32];
   let mut req = Request::new(&mut headers);
   let parse_result = Request::parse(&mut req, &buffer);
   match parse_result {
