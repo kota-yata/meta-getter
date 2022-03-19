@@ -116,11 +116,12 @@ fn find_meta(data: &String) -> Option<Vec<String>> {
 
 fn response(mut stream: TcpStream, status: &str, data: Vec<String>) -> Result<&'static str> {
   let response = format!(
-    "HTTP/2.0 {}\r\nContent-Type: application/json\r\nContent-Language: en-US\r\nAccess-Control-Allow-Origin: *\r\nAccess-Control-Request-Method: GET\r\n\r\n{:#?}\n",
+    "HTTP/2.0 {}\r\nContent-Type: application/json\r\nContent-Language: en-US\r\nAccess-Control-Allow-Origin: *\r\nAccess-Control-Request-Method: GET\r\nContent-Length: {}\r\n\r\n{:#?}",
     status,
+    data.len(),
     data
   );
-  let write_result = stream.write(response.as_bytes());
+  let write_result = stream.write_all(response.as_bytes());
   match write_result {
     Err(err) => Err(err),
     Ok(_) => {
