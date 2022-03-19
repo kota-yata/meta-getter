@@ -30,29 +30,29 @@ fn handle_connection(mut stream: TcpStream) {
   }
   if req.path.is_none() {
     let empty_response = Vec::from([String::from_str("Path not found").unwrap()]);
-    response(stream, 200, empty_response).unwrap();
+    response(stream, "200 OK", empty_response).unwrap();
     return;
   };
   let path = req.path.unwrap();
   let (is_query_found, query_string) = find_query(path, "url");
   if !is_query_found {
     let empty_response = Vec::from([String::from_str("Query not found").unwrap()]);
-    response(stream, 200, empty_response).unwrap();
+    response(stream, "200 OK", empty_response).unwrap();
     return;
   }
   let data = fetch(&query_string);
   if data.is_err() {
     let empty_response = Vec::from([String::from_str("Invalid URL").unwrap()]);
-    response(stream, 200, empty_response).unwrap();
+    response(stream, "200 OK", empty_response).unwrap();
     return;
   }
   let result_vec = find_meta(&data.unwrap());
   if result_vec.is_none() {
     let empty_response = Vec::from([String::from_str("No meta tag found").unwrap()]);
-    response(stream, 200, empty_response).unwrap();
+    response(stream, "200 OK", empty_response).unwrap();
     return;
   }
-  match response(stream, 200, result_vec.unwrap()) {
+  match response(stream, "200 OK", result_vec.unwrap()) {
     Err(err) => panic!("{:#?}", err),
     Ok(_) => println!("Successfully responsed")
   }
@@ -114,7 +114,7 @@ fn find_meta(data: &String) -> Option<Vec<String>> {
   }
 }
 
-fn response(mut stream: TcpStream, status: u16, data: Vec<String>) -> Result<&'static str> {
+fn response(mut stream: TcpStream, status: &str, data: Vec<String>) -> Result<&'static str> {
   let response = format!(
     "HTTP/2.0 {}\r\nContent-Type: application/json\r\nContent-Language: en-US\r\nAccess-Control-Allow-Origin: *\r\nAccess-Control-Request-Method: GET\r\n\r\n{:#?}\n",
     status,
