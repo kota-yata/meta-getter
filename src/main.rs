@@ -28,34 +28,31 @@ fn handle_connection(mut stream: TcpStream) {
     Ok(x) => println!("{:#?}", x),
     Err(x) => println!("Not working!!! : {}", x)
   }
-  let path = match req.path {
-    None => {
-      let empty_response = Vec::from([String::from_str("Path not found").unwrap()]);
-      response(stream, 200, empty_response).unwrap();
-      panic!("Path not found")
-    },
-    Some(x) => x
+  if req.path.is_none() {
+    let empty_response = Vec::from([String::from_str("Path not found").unwrap()]);
+    response(stream, 200, empty_response).unwrap();
+    return;
   };
+  let path = req.path.unwrap();
   let (is_query_found, query_string) = find_query(path, "url");
   if !is_query_found {
     let empty_response = Vec::from([String::from_str("Query not found").unwrap()]);
     response(stream, 200, empty_response).unwrap();
-    // panic!("Query not found")
     return;
   }
-  let data = match fetch(&query_string) {
-    Err(_) => {
-      let empty_response = Vec::from([String::from_str("Invalid URL").unwrap()]);
-      response(stream, 200, empty_response).unwrap();
-      return;
-    },
-    Ok(x) => x
-  };
-  let result_vec = match find_meta(&data) {
-    None => panic!("Meta tag not found"),
-    Some(x) => x
-  };
-  match response(stream, 200, result_vec) {
+  let data = fetch(&query_string);
+  if data.is_err() {
+    let empty_response = Vec::from([String::from_str("Invalid URL").unwrap()]);
+    response(stream, 200, empty_response).unwrap();
+    return;
+  }
+  let result_vec = find_meta(&data.unwrap());
+  if result_vec.is_none() {
+    let empty_response = Vec::from([String::from_str("No meta tag found").unwrap()]);
+    response(stream, 200, empty_response).unwrap();
+    return;
+  }
+  match response(stream, 200, result_vec.unwrap()) {
     Err(err) => panic!("{:#?}", err),
     Ok(_) => println!("Successfully responsed")
   }
