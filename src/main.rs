@@ -133,4 +133,5 @@ fn response(mut stream: TcpStream, status: &str, data: Vec<String>) -> Result<&'
 // TODO
 // [x] Return error message to clients when [ query wasn't found, url was invalid ]
 // [x] Make a function splitting up meta tag and converting them into object
+// [ ] multithread
 // [ ] Graceful shutdown and cleanup
