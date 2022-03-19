@@ -22,7 +22,11 @@ fn handle_connection(mut stream: TcpStream) {
   stream.read(&mut buffer).unwrap();
   let mut headers = [httparse::EMPTY_HEADER; 32];
   let mut req = Request::new(&mut headers);
-  Request::parse(&mut req, &buffer).unwrap();
+  let parse_result = Request::parse(&mut req, &buffer);
+  match parse_result {
+    Ok(x) => println!("{:#?}", x),
+    Err(x) => println!("Not working!!! : {}", x)
+  }
   let path = match req.path {
     None => {
       let empty_response = Vec::from([String::from_str("Path not found").unwrap()]);
