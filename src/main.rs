@@ -3,17 +3,15 @@ use std::{net::{TcpListener, TcpStream}, io::{Read, Write}, thread, str::FromStr
 use httparse::{self, Request};
 use reqwest;
 use html_parser::Dom;
-// use futures::executor::block_on;
 
 fn main() {
   let listener = TcpListener::bind(format!("0.0.0.0:{}", std::env::var("PORT").unwrap_or("8000".to_string()))).unwrap();
   // let pool = ThreadPool::new(4);
   for stream in listener.incoming() {
     let stream = stream.unwrap();
-    // pool.execute(|| {
-    //   handle_connection(stream);
-    // });
-    handle_connection(stream);
+    thread::spawn(|| {
+      handle_connection(stream);
+    });
   }
 }
 
@@ -23,10 +21,11 @@ fn handle_connection(mut stream: TcpStream) {
   println!("{:#?}", usize);
   let mut headers = [httparse::EMPTY_HEADER; 32];
   let mut req = Request::new(&mut headers);
-  let parse_result = Request::parse(&mut req, &buffer);
-  match parse_result {
-    Ok(x) => println!("{:#?}", x),
-    Err(x) => println!("Not working!!! : {}", x)
+  let parse_result =  Request::parse(&mut req, &buffer);
+  if parse_result.is_err() {
+    let empty_response = Vec::from([String::from_str("Parse failed").unwrap()]);
+    response(stream, "200 OK", empty_response).unwrap();
+    return;
   }
   if req.path.is_none() {
     let empty_response = Vec::from([String::from_str("Path not found").unwrap()]);
@@ -53,7 +52,7 @@ fn handle_connection(mut stream: TcpStream) {
     return;
   }
   match response(stream, "200 OK", result_vec.unwrap()) {
-    Err(err) => panic!("{:#?}", err),
+    Err(err) => println!("{:#?}", err),
     Ok(_) => println!("Successfully responsed")
   }
 }
